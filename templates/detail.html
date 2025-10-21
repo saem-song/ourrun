@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang="ko">
-    {% extends "layout.html" %}
+{% extends "layout.html" %}
 
-    {% block title %}{{ post.title }} 상세 보기{% endblock %}
+{% block title %}{{ post.title }} 방명록 상세{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ post.title }}</h1>
     
-    {% block content %}
-        <h1 class="mb-3">{{ post.title }}</h1>
-        <div class="alert alert-secondary" role="alert">
-            작성일: {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light text-muted">
+            {{ post.id }} | NAME: {{ post.author }} | DATE: {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}
+            {% if post.updated_at and post.created_at.strftime('%Y%m%d%H%M%S') != post.updated_at.strftime('%Y%m%d%H%M%S') %}
+                <span class="ms-3 text-warning small">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.636a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.121l6.11-6.11z"/>
+                        <path fill-rule="evenodd" d="M3.792 12.44A.5.5 0 0 1 3.2 12.2l-.5-2a.5.5 0 0 1 .147-.573l8.8-8.8 2 2-8.8 8.8a.5.5 0 0 1-.57.147zM1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11A.5.5 0 0 1 2.5 2h6a.5.5 0 0 0 0-1h-6A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                    최종 수정: {{ post.updated_at.strftime('%Y-%m-%d %H:%M') }}
+                </span>
+            {% endif %}
         </div>
-        <hr>
-        <div class="card p-3 mb-4">
-            <pre class="m-0" style="white-space: pre-wrap;">{{ post.content }}</pre>
+        <div class="card-body">
+            <p class="card-text fs-5">
+                <pre class="m-0" style="white-space: pre-wrap; font-family: inherit;">{{ post.content }}</pre>
+            </p>
         </div>
-        
-        <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-warning btn-sm me-2">수정</a>
-        
-        <form action="{{ url_for('delete', post_id=post.id) }}" method="POST" style="display:inline;">
-            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
-        </form>
-        
-        <hr class="mt-4">
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">목록으로 돌아가기</a>
-    {% endblock %}
+    </div>
+    
+    <div class="d-flex justify-content-between">
+        <div>
+            <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-warning me-2">EDIT</a>
+            
+            <form action="{{ url_for('delete', post_id=post.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('This action cannot be undone. Proceed?');">REMOVE</button>
+            </form>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+
+{% endblock %}
 </html>

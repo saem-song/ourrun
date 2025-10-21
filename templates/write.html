@@ -2,22 +2,33 @@
 <html lang="ko">
     {% extends "layout.html" %}
 
-    {% block title %}새 글 작성{% endblock %}
+    {% block title %}Leave Your Message{% endblock %}
     
     {% block content %}
-        <h1 class="mb-4">새 글 작성</h1>
-        <form method="POST" action="{{ url_for('write') }}">
-            <div class="mb-3">
-                <label for="title" class="form-label">제목</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">내용</label>
-                <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-success">저장하기</button>
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">취소</a>
-        </form>
+        <h2 class="mb-4 fw-light">Leave your 📩 for BOSUNG!</h2>
+    
+        <div class="card p-4 shadow-sm">
+            <form method="POST" action="{{ url_for('write') }}">
+                <div class="mb-3">
+                    <label for="author" class="form-label fw-bold">Name</label>
+                    <input type="text" class="form-control" id="author" name="author" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="title" class="form-label fw-bold">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="content" class="form-label fw-bold">Message</label>
+                    <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary me-2">SAVE</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">CANCEL</a>
+                </div>
+            </form>
+        </div>
     {% endblock %}
 </html>
