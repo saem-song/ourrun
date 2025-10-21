@@ -1,2 +1,2 @@
-# outrun
+# ourrun
 our run
