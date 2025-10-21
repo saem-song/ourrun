@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>새 글 작성</title>
+</head>
+<body>
+    <h1>새 글 작성</h1>
+    <form method="POST" action="{{ url_for('write') }}">
+        <p>제목: <input type="text" name="title" required></p>
+        <p>내용: <br>
+           <textarea name="content" rows="10" cols="50" required></textarea>
+        </p>
+        <p><input type="submit" value="저장하기"></p>
+    </form>
+    <p><a href="{{ url_for('index') }}">취소</a></p>
+</body>
+</html>
