@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ post.title }} - 상세 보기</title>
-</head>
-<body>
-    <h1>{{ post.title }}</h1>
-    <p>작성일: {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
-    <hr>
-    <div>
-        <pre>{{ post.content }}</pre>
-    </div>
-    <hr>
-    <p>
-        <a href="{{ url_for('edit', post_id=post.id) }}">수정</a>
+    {% extends "layout.html" %}
+
+    {% block title %}{{ post.title }} 상세 보기{% endblock %}
+    
+    {% block content %}
+        <h1 class="mb-3">{{ post.title }}</h1>
+        <div class="alert alert-secondary" role="alert">
+            작성일: {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}
+        </div>
+        <hr>
+        <div class="card p-3 mb-4">
+            <pre class="m-0" style="white-space: pre-wrap;">{{ post.content }}</pre>
+        </div>
+        
+        <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-warning btn-sm me-2">수정</a>
         
         <form action="{{ url_for('delete', post_id=post.id) }}" method="POST" style="display:inline;">
-            <input type="submit" value="삭제" onclick="return confirm('정말로 삭제하시겠습니까?');">
+            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
         </form>
-    </p>
-    <p><a href="{{ url_for('index') }}">목록으로 돌아가기</a></p>
-</body>
+        
+        <hr class="mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">목록으로 돌아가기</a>
+    {% endblock %}
 </html>

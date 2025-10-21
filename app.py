@@ -26,19 +26,26 @@ with app.app_context():
     db.create_all()
 
 
+# app.py (수정할 부분)
+
+# ... 기존 import와 설정 코드들 (변경 없음) ...
+
 # -------------------- 1. READ (게시글 목록 및 상세 조회) --------------------
 
+# 페이지네이션을 위해 /?page=1 형태로 요청을 받을 수 있도록 수정
 @app.route('/')
 def index():
-    # 모든 게시글을 최신 순으로 조회
-    posts = Post.query.order_by(Post.created_at.desc()).all()
-    return render_template('index.html', posts=posts)
+    # URL 쿼리 파라미터에서 'page' 값을 가져오고, 없으면 기본값은 1
+    page = request.args.get('page', 1, type=int)
+    per_page = 10  # 페이지당 게시글 수 (10개로 설정)
 
-@app.route('/post/<int:post_id>')
-def post_detail(post_id):
-    # 특정 ID의 게시글을 조회하거나 없으면 404 에러 반환
-    post = db.get_or_404(Post, post_id)
-    return render_template('detail.html', post=post)
+    # paginate() 메서드를 사용해 페이지네이션 처리
+    posts_pagination = Post.query.order_by(Post.created_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    
+    # pagination 객체와 게시글 데이터를 HTML에 전달
+    return render_template('index.html', posts_pagination=posts_pagination, posts=posts_pagination.items)
 
 # -------------------- 2. CREATE (게시글 작성) --------------------
 

@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>게시글 수정: {{ post.title }}</title>
-</head>
-<body>
-    <h1>게시글 수정</h1>
-    <form method="POST" action="{{ url_for('edit', post_id=post.id) }}">
-        <p>제목: <input type="text" name="title" value="{{ post.title }}" required></p>
-        <p>내용: <br>
-           <textarea name="content" rows="10" cols="50" required>{{ post.content }}</textarea>
-        </p>
-        <p><input type="submit" value="수정 완료"></p>
-    </form>
-    <p><a href="{{ url_for('post_detail', post_id=post.id) }}">취소</a></p>
-</body>
+    {% extends "layout.html" %}
+
+    {% block title %}게시글 수정: {{ post.title }}{% endblock %}
+    
+    {% block content %}
+        <h1 class="mb-4">게시글 수정</h1>
+        <form method="POST" action="{{ url_for('edit', post_id=post.id) }}">
+            <div class="mb-3">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea class="form-control" id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-success">수정 완료</button>
+            <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn btn-secondary">취소</a>
+        </form>
+    {% endblock %}
 </html>

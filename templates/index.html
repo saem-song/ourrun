@@ -1,34 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Simple 게시판</title>
-</head>
-<body>
-    <h1>게시판 목록</h1>
-    <p><a href="{{ url_for('write') }}">새 글 작성</a></p>
+    {% extends "layout.html" %}
+
+    {% block title %}게시글 목록{% endblock %}
     
-    <table border="1" width="80%">
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성일</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for post in posts %}
-            <tr>
-                <td>{{ post.id }}</td>
-                <td><a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a></td>
-                <td>{{ post.created_at.strftime('%Y-%m-%d') }}</td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="3">게시글이 없습니다.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
+    {% block content %}
+        <h1 class="mb-4">게시판 목록</h1>
+        <p class="text-end"><a href="{{ url_for('write') }}" class="btn btn-primary">새 글 작성</a></p>
+        
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 10%">번호</th>
+                    <th style="width: 60%">제목</th>
+                    <th style="width: 30%">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td><a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a></td>
+                    <td>{{ post.created_at.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">게시글이 없습니다.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% block content %}
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if not posts_pagination.has_prev %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('index', page=posts_pagination.prev_num) }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+    
+                {% for page_num in posts_pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                    {% if page_num %}
+                        {% if posts_pagination.page == page_num %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ page_num }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('index', page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                    {% endif %}
+                {% endfor %}
+    
+                <li class="page-item {% if not posts_pagination.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('index', page=posts_pagination.next_num) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+    {% endblock %}
 </html>

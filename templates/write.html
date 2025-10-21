@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>새 글 작성</title>
-</head>
-<body>
-    <h1>새 글 작성</h1>
-    <form method="POST" action="{{ url_for('write') }}">
-        <p>제목: <input type="text" name="title" required></p>
-        <p>내용: <br>
-           <textarea name="content" rows="10" cols="50" required></textarea>
-        </p>
-        <p><input type="submit" value="저장하기"></p>
-    </form>
-    <p><a href="{{ url_for('index') }}">취소</a></p>
-</body>
+    {% extends "layout.html" %}
+
+    {% block title %}새 글 작성{% endblock %}
+    
+    {% block content %}
+        <h1 class="mb-4">새 글 작성</h1>
+        <form method="POST" action="{{ url_for('write') }}">
+            <div class="mb-3">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-success">저장하기</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">취소</a>
+        </form>
+    {% endblock %}
 </html>
