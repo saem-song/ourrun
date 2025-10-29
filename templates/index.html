@@ -29,7 +29,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title text-primary fw-bold">{{ post.title }}</h5>
                         <p class="card-text text-muted small mb-3">
-                            <medium>📩 {{ post.created_at.strftime('%m-%d') }}, {{ post.id }}번째 방명록 by {{ post.author }} </medium>
+                            <medium>📩 {{ post.created_at.strftime('%m-%d') }},방명록 by {{ post.author }} </medium>
                         </p>
                         <p class="card-text flex-grow-1 overflow-hidden" style="max-height: 4.5em;">
                             {{ post.content | truncate(150, true) }}
